@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::get('/', [\App\Livewire\Web\Homepage::class, '__invoke'])->name('web.homepage');
+Route::get('/detail/{id}', [\App\Livewire\Web\Homepage::class, '__invoke'])->name('web.detail');
