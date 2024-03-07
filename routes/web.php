@@ -21,9 +21,9 @@ Route::get('/', [\App\Livewire\Web\Homepage::class, '__invoke'])
 
 Route::group(['prefix' => 'products'], function () {
     Route::get('/', [\App\Livewire\Web\Product\Index::class, '__invoke'])
-        ->name('web.product');
+        ->name('web.products');
     Route::get('/detail/{id}', [\App\Livewire\Web\Product\Detail::class, '__invoke'])
-        ->name('web.product.detail');
+        ->name('web.products.detail');
 });
 
 

@@ -4,8 +4,9 @@ namespace App\Livewire\Web\Auth;
 
 use App\Models\User;
 use App\View\Components\Web\Layout;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
-use phpseclib3\Crypt\Hash;
 
 class Login extends Component
 {
@@ -34,9 +35,17 @@ class Login extends Component
         if($user) {
             if(Hash::check($validated['password'], $user->password)) {
 
+                if(Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $validated['remember_token']))
+                {
+                    $token = auth()->user()->createToken('Test')->accessToken;
 
+                    return redirect()
+                        ->route('web.products')
+                        ->header('Bearer ', $token);
+                } else {
+//   wrong credentials return error
+                }
 
-                return redirect()->route('user.dashboard');
             }
             else {
 
