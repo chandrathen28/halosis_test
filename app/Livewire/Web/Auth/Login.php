@@ -2,23 +2,50 @@
 
 namespace App\Livewire\Web\Auth;
 
+use App\Models\User;
 use App\View\Components\Web\Layout;
 use Livewire\Component;
+use phpseclib3\Crypt\Hash;
 
 class Login extends Component
 {
-    public $hidden;
+    public $email;
+    public $password;
+    public $remember_token = false;
 
-    public function homepage() {
-        return redirect()->route('web.homepage');
+    protected array $rules = [
+        'email' => 'required|email',
+        'password' => 'required',
+        'remember_token' => 'nullable'
+    ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
 
-    public function doHidden(){
-        $this->hidden = true;
-    }
+    public function submit() {
+        $validated = $this->validate();
 
-    public function register() {
-        return redirect()->route('web.register');
+        $user = User::where([
+            ['email', $validated['email']],
+        ])->first();
+
+        if($user) {
+            if(Hash::check($validated['password'], $user->password)) {
+
+
+
+                return redirect()->route('user.dashboard');
+            }
+            else {
+
+                return redirect()->route('web.login');
+            }
+        }
+        else {
+            return redirect()->route('web.login');
+        }
     }
 
     public function render()
