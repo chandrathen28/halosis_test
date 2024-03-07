@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Halosis Test</title>
-    <link rel='stylesheet' href='{{ asset('web/css/woocommerce-layout.css') }}' type='text/css' media='all'/>
-    <link rel='stylesheet' href='{{ asset('web/css/woocommerce-smallscreen.css') }}' type='text/css' media='only screen and (max-width: 768px)'/>
-    <link rel='stylesheet' href='{{ asset('web/css/woocommerce.css') }}' type='text/css' media='all'/>
-    <link rel='stylesheet' href='{{ asset('web/css/font-awesome.min.css') }}' type='text/css' media='all'/>
-    <link rel='stylesheet' href='{{ asset('web/css/style.css') }}' type='text/css' media='all'/>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Oswald:400,500,700%7CRoboto:400,500,700%7CHerr+Von+Muellerhoff:400,500,700%7CQuattrocento+Sans:400,500,700' type='text/css' media='all'/>
-    <link rel='stylesheet' href='{{ asset('web/css/easy-responsive-shortcodes.css') }}' type='text/css' media='all'/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <title>Lugx Gaming Shop HTML5 Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ asset('/web/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{{ asset('/web/assets/css/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('/web/assets/css/templatemo-lugx-gaming.css') }}">
+    <link rel="stylesheet" href="{{ asset('/web/assets/css/owl.css') }}">
+    <link rel="stylesheet" href="{{ asset('/web/assets/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('/web/https://unpkg.com/swiper@7/swiper-bundle.min.css') }}"/>
+.
     @yield('styles')
 
     @livewireStyles
 </head>
 
-<body class="home page page-template page-template-template-portfolio page-template-template-portfolio-php">
-    <div id="page">
-        <div class="container">
+<body>
 
-            <livewire:web.layout.header></livewire:web.layout.header>
+    <livewire:web.layout.header></livewire:web.layout.header>
 
-            {{ $slot }}
+    {{ $slot }}
 
-        </div>
-        <!-- .container -->
+    <livewire:web.layout.footer></livewire:web.layout.footer>
 
-        <livewire:web.layout.footer></livewire:web.layout.footer>
 
-        <a href="#top" class="smoothup" title="Back to top"><span class="genericon genericon-collapse"></span></a>
-    </div>
+    <script src="{{ asset('/web/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('/web/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/web/assets/js/isotope.min.js') }}"></script>
+    <script src="{{ asset('/web/assets/js/owl-carousel.js') }}"></script>
+    <script src="{{ asset('/web/assets/js/counter.js') }}"></script>
+    <script src="{{ asset('/web/assets/js/custom.js') }}"></script>
 
     @livewireScripts
-<!-- #page -->
-    <script src='{{ asset('web/js/jquery.js') }}'></script>
-    <script src='{{ asset('web/js/plugins.js') }}'></script>
-    <script src='{{ asset('web/js/scripts.js') }}'></script>
-    <script src='{{ asset('web/js/masonry.pkgd.min.js') }}'></script>
 </body>
 </html>
