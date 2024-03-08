@@ -57,60 +57,60 @@ Route::group(['middleware' => 'UserMiddleware'], function() {
 Route::post('api/v1/user/customer', 'API\v1\CustomerController@store')->middleware('XSSProtection');
 Route::post('api/v1/user/customer/login', 'API\v1\CustomerController@login');
 
-//Test case
-use App\Model\Category;
-use App\Model\Subcategory;
-use App\Model\Products;
-use App\Model\Customer;
-use App\Model\Order;
-use App\Model\OrderItem;
-use App\Http\Fpdf\Fpdf;
-
-class Pdf extends Fpdf
-{
-	// Simple table
-	function BasicTable($data)
-	{
-	    // Data
-	    foreach($data as $row)
-	    {
-	        foreach($row as $col)
-	            $this->Cell(120,9,$col,0);
-	        $this->Ln();
-	    }
-	}	
-}
-
-Route::get('a', function(Request $request) {
-	$data = [
-		['2 X Apple', '$20.00'],
-		['4 X Orange', '$5.25'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75'],
-		['4 X Grapes', '$10.75']
-	];
-
-	$height = (8*count($data)); //28
-	$width = 170;
-	$orientation = $width > $height ? 'L' : 'P';//P'60
-	$pdf = new Pdf('P', 'pt', array($height, $width));
-	$pdf->setMargins(1, 4);
-	$pdf->AddPage();
-	$pdf->SetFont('Arial','', 8);
-	$pdf->BasicTable($data);
-	$output = $pdf->Output();
-	/*$orderItem = OrderItem::where('order_id',6)->get()*/
-	return response($output)->file();
-});
+////Test case
+//use App\Model\Category;
+//use App\Model\Subcategory;
+//use App\Model\Products;
+//use App\Model\Customer;
+//use App\Model\Order;
+//use App\Model\OrderItem;
+//use App\Http\Fpdf\Fpdf;
+//
+//class Pdf extends Fpdf
+//{
+//	// Simple table
+//	function BasicTable($data)
+//	{
+//	    // Data
+//	    foreach($data as $row)
+//	    {
+//	        foreach($row as $col)
+//	            $this->Cell(120,9,$col,0);
+//	        $this->Ln();
+//	    }
+//	}
+//}
+//
+//Route::get('a', function(Request $request) {
+//	$data = [
+//		['2 X Apple', '$20.00'],
+//		['4 X Orange', '$5.25'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75'],
+//		['4 X Grapes', '$10.75']
+//	];
+//
+//	$height = (8*count($data)); //28
+//	$width = 170;
+//	$orientation = $width > $height ? 'L' : 'P';//P'60
+//	$pdf = new Pdf('P', 'pt', array($height, $width));
+//	$pdf->setMargins(1, 4);
+//	$pdf->AddPage();
+//	$pdf->SetFont('Arial','', 8);
+//	$pdf->BasicTable($data);
+//	$output = $pdf->Output();
+//	/*$orderItem = OrderItem::where('order_id',6)->get()*/
+//	return response($output)->file();
+//});

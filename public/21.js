@@ -149,7 +149,7 @@ var render = function() {
             on: {
               submit: function($event) {
                 $event.preventDefault()
-                return _vm.submit.apply(null, arguments)
+                return _vm.submit($event)
               }
             }
           },
