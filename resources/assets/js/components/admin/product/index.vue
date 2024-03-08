@@ -1,35 +1,35 @@
 <template>
 <div class="row">
-<!--	<div class="col-md-3">-->
-<!--		<div class="panel-group">-->
-<!--			<div class="panel panel-default">-->
-<!--				<div class="panel panel-heading">-->
-<!--					<h4 class="panel-title" data-toggle="collapse" href="#collapse1">-->
-<!--						{{ minify(subcategory_name) }}-->
-<!--					</h4>-->
-<!--				</div>-->
-<!--				<div id="collapse1" class="panel-collapse collapse">-->
-<!--					<ul class="list-group">-->
-<!--						<router-link-->
-<!--							class="list-group-item"-->
-<!--							tag="li"-->
-<!--							:to="{params:{subcategory_id:0}}"-->
-<!--							active-class="active">All Subcategories</router-link>-->
-<!--						<li-->
-<!--							v-for="subcategory in subcategories"-->
-<!--							class="list-group-item"-->
-<!--							:class="{'active':subcategory.id==subcategory_id}"-->
-<!--							@click="$router.push({params:{subcategory_id:subcategory.id}})">-->
-<!--							<router-link-->
-<!--								tag="span"-->
-<!--								:to="{params:{subcategory_id:subcategory.id}}">{{minify(subcategory.subcategory_name) }}-->
-<!--							</router-link>-->
-<!--						</li>-->
-<!--					</ul>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</div>-->
+	<div class="col-md-3">
+		<div class="panel-group">
+			<div class="panel panel-default">
+				<div class="panel panel-heading">
+					<h4 class="panel-title" data-toggle="collapse" href="#collapse1">
+						{{ minify(subcategory_name) }}
+					</h4>
+				</div>
+				<div id="collapse1" class="panel-collapse collapse">
+					<ul class="list-group">
+						<router-link 
+							class="list-group-item"
+							tag="li"
+							:to="{params:{subcategory_id:0}}"
+							active-class="active">All Subcategories</router-link>
+						<li 
+							v-for="subcategory in subcategories" 
+							class="list-group-item" 
+							:class="{'active':subcategory.id==subcategory_id}"
+							@click="$router.push({params:{subcategory_id:subcategory.id}})">
+							<router-link 
+								tag="span"
+								:to="{params:{subcategory_id:subcategory.id}}">{{minify(subcategory.subcategory_name) }}
+							</router-link>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="col-md-9">
 		<div class="panel panel-default">
 			<div class="panel-body table-responsive">
@@ -91,7 +91,7 @@ export default{
 			axios.delete(data.getBaseURL()+'api/v1/product/'+id)
 				.then(function(response){
 					$.notifyClose();
-					if (util.showResult(response))
+					if (util.showResult(response)) 
 						vm.refreshProducts();
 				})
 				.catch(function(error){
@@ -116,7 +116,7 @@ export default{
 						$.notifyClose();
 						var rows = this.transformData(this.products);
 						this.initDatatable(rows);
-					});
+					});	
 				}
 			}).catch(function(error){
 				if (vm.err > 0) {
@@ -145,7 +145,7 @@ export default{
 							$.notifyClose();
 							var rows = this.transformData(this.products);
 							this.initDatatable(rows);
-						});
+						}); 
 					} else {
 						vm.refreshProducts();
 					}
@@ -257,7 +257,7 @@ export default{
 		 * @return {Object} Product
 		 */
 		getProduct: function(id) {
-			for (var i in this.products)
+			for (var i in this.products) 
 				if (this.products[i].id == id)
 					return this.products[i];
 			return {};

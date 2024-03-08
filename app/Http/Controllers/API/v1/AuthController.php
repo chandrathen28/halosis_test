@@ -115,7 +115,7 @@ class AuthController extends Controller
      */
     private function getUser ($user)
     {
-    	return $this->admins->where('admin_user', $user)->first();
+    	return $this->admins->where('admin_user', $user);
     } 
 
 
@@ -127,7 +127,7 @@ class AuthController extends Controller
      */
     private function getId ($user)
     {
-    	return $this->getUser($user)->id;
+    	return $this->getUser($user)->get()->first()->id;
     }
 
 

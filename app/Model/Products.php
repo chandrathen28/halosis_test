@@ -8,8 +8,8 @@ class Products extends Model
 {
     protected $table = 'products';
 
-    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function subcategory()
     {
-    	return $this->belongsTo('App\Model\Category');
+    	return $this->belongsTo('App\Model\Subcategory');
     }
 }

@@ -16,12 +16,12 @@ const routes = [
 	{path: '/category/:category_id', component: redir},
 	{path: '/check-out', component: checkout},
 	{path: '/cart', component: cart},
-	// {path: '/order', component: order},
-	// {path: '/order-details', component: order_details},
-	// {
-	// 	path: '/category/:category_id/subcategory/:subcategory_id',
-	// 	component: product
-	// }
+	{path: '/order', component: order},
+	{path: '/order-details', component: order_details},
+	{
+		path: '/category/:category_id/subcategory/:subcategory_id', 
+		component: product
+	}
 ]
 
 const router = new VueRouter({
@@ -30,7 +30,7 @@ const router = new VueRouter({
 
 const app = new Vue({
 	router,
-
+	
 	data: {
 		baseURL: data.getBaseURL(),
 		storageURL: data.getStorageURL()
@@ -61,7 +61,7 @@ const app = new Vue({
 				 	response = util.getResponse(response);
 				 	if (response.status == 'success')
 				 		util.notify('Logout successfully', 'success');
-				 	else
+				 	else 
 				 		util.notify('An error occured', 'error');
 				 })
 				 .catch(function(response){

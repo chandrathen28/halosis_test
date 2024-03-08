@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
 	/**
 	 * Get all Categories
-	 *
+	 * 
 	 * @return Response JSON result
 	 */
     public function index()
@@ -32,8 +32,8 @@ class CategoryController extends Controller
     {
     	$this->validateInput($request);
 
-    	$category_name = $request->name;
-    	$category_description = $request->description;
+    	$category_name = $request->category_name;
+    	$category_description = $request->category_description;
     	$category_image = $this->getPath($request);
 
     	$this->insertCategory($category_name, $category_description, $category_image);
@@ -48,10 +48,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $image = Category::find($id)->image;
-        if ($this->deleteCategory($id))
+        $image = Category::find($id)->category_image;
+        if ($this->deleteCategory($id)) 
             $this->deleteImage($image);
-
+        
         return response()->json($this->default_result);
     }
 
@@ -75,10 +75,10 @@ class CategoryController extends Controller
     {
         $this->validateInput($request);
 
-        $default_image = Category::find($id)->image;
+        $default_image = Category::find($id)->category_image;
 
-        $category_name = $request->name;
-        $category_description = $request->description;
+        $category_name = $request->category_name;
+        $category_description = $request->category_description;
         $category_image = $this->getPath($request, $default_image);
 
         if($this->updateCategory($id, $category_name, $category_description, $category_image))
@@ -93,15 +93,15 @@ class CategoryController extends Controller
      * @param String $category name
      * @param String $category description
      * @param String $category image
-     *
+     * 
      */
     private function updateCategory($id, $category_name, $category_description, $category_image)
     {
         try {
             $category = Category::find($id);
-            $category->name = $category_name;
-            $category->description = $category_description;
-            $category->image = $category_image;
+            $category->category_name = $category_name;
+            $category->category_description = $category_description;
+            $category->category_image = $category_image;
             $category->save();
             array_push($this->default_result['message'], 'Category updated successfully');
             return true;
@@ -109,13 +109,13 @@ class CategoryController extends Controller
             $this->default_result['status'] = 'failed';
             array_push($this->default_result['message'], 'Failed to update category');
             return false;
-        }
+        } 
     }
 
     /**
      * Delete an image
      * @param String $path Location of image
-     *
+     * 
      */
     private function deleteImage($path)
     {
@@ -149,8 +149,8 @@ class CategoryController extends Controller
     private function validateInput($request)
     {
     	return $this->validate($request,[
-    		'name' => 'required',
-    		'image' => 'nullable|image'
+    		'category_name' => 'required',
+    		'category_image' => 'nullable|image'
     	]);
     }
 
@@ -164,13 +164,13 @@ class CategoryController extends Controller
         $path = is_null($image) ? $this->default_image : $image;
     	$file = $request->file('category_image');
 
-    	if (!is_null($file)) {
-			$upload = UtilityController::upload($file, $this->default_directory, time() . '.jpg');
-			if ($upload['status'])
+    	if (!is_null($file)) {    	
+			$upload = UtilityController::upload($file, $this->default_directory, time() . '.jpg');  			
+			if ($upload['status']) 
 				$path = $upload['path'];
 			else
 				array_push($this->default_result['message'], 'An error occured while uploading your image');
-    	}
+    	} 
 
     	return $path;
     }
@@ -187,9 +187,9 @@ class CategoryController extends Controller
     	$message = '';
     	try {
     		$category = new Category;
-    		$category->name = $category_name;
-    		$category->description = $category_description;
-    		$category->image = $category_image;
+    		$category->category_name = $category_name;
+    		$category->category_description = $category_description;
+    		$category->category_image = $category_image;
     		$category->save();
     		$message = 'Category inserted successfully';
     	} catch (Exception $e) {

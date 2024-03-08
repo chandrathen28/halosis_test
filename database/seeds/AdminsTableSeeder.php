@@ -13,8 +13,15 @@ class AdminsTableSeeder extends Seeder
      */
     public function run()
     {
+        /*DB::table('admins')->insert([
+        	'admin_name' => 'Lenard Mangay-ayam',
+        	'admin_type' => 1,
+        	'admin_user' => 'admin',
+        	'admin_pass' => Hash::make('admin'),
+        ]);*/
+
         $admin = new Admins;
-        $admin->admin_name = '';
+        $admin->admin_name = 'Lenard Mangay-ayam';
         $admin->admin_type = 1;
         $admin->admin_user = 'admin';
         $admin->admin_pass = Hash::make('admin');
