@@ -29,7 +29,7 @@
 		<!-- Logo-->
 		<a href="" class="logo">
 			<span class="logo-mini"><b>L's</b> online shop</span>
-			<span class="logo-lg"><b>Lenard's</b> online shop</span>
+			<span class="logo-lg"><b>Laravel</b> online shop</span>
 		</a>
 
 		<!-- Header Navbar -->

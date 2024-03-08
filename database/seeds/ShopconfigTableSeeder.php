@@ -12,7 +12,7 @@ class ShopconfigTableSeeder extends Seeder
     public function run()
     {
         DB::table('shopconfig')->insert([
-        	'shopconfig_name'=>'Lenard',
+        	'shopconfig_name'=>'root',
         	'shopconfig_address'=>'',
         	'shopconfig_phone'=>'',
         	'shopconfig_email'=>'',

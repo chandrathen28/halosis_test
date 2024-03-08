@@ -1,11 +1,7 @@
 var util = function (debug) {
-	var version = 'v1.2';
-	var author = 'Lenard Mangay-ayam';
 	if (debug == undefined) debug = false;
 	if (debug) {
 		console.log('You are running utility on debug');
-		console.log('Version '+version)
-		console.log('Author '+author)
 	}
 	return {
 		fulllogs:[],
