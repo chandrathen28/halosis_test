@@ -39,18 +39,18 @@ export default {
 	created() {
 		if(this.categories.length < 1)
 			this.refreshCategories();
-		else 
+		else
 			this.$nextTick(function(){
 				var rows = this.transformData(this.categories)
 				this.initDatatable(rows);
-			});		
+			});
 	},
 
 	methods: {
 
 		/**
 		 * Refresh categories
-		 * 
+		 *
 		 * @return Object[] categories
 		 */
 		refreshCategories: function() {
@@ -94,13 +94,13 @@ export default {
 			var result = [];
 			for (var i in categories) {
 				var row = [];
-				var image = data.getStorageURL() + categories[i]['category_image'];
+				var image = data.getStorageURL() + categories[i]['image'];
 				var id = categories[i]['id'];
 
-				
+
 				row.push('<img src="'+image+'" class="thumbnail" height="50px" width="50px" />');
-				row.push(util.minify(categories[i]['category_name'], 15));
-				row.push(util.minify(categories[i]['category_description'], 15));
+				row.push(util.minify(categories[i]['name'], 15));
+				row.push(util.minify(categories[i]['description'], 15));
 				row.push('<button class="btn btn-link edit" name="'+id+'"><span class="fa fa-edit"></span></button>');
 				row.push('<button class="btn btn-link delete" name="'+id+'"><span class="fa fa-trash"></span></button>');
 				result.push(row);
@@ -157,7 +157,7 @@ export default {
 
 		/**
 		 * Get Category Id
-		 * 
+		 *
 		 * @return Int Category ID
 		 */
 		getCategoryId: function() {
@@ -171,7 +171,7 @@ export default {
 		 */
 		getCategory: function(id) {
 			var cat = this.categories;
-			for (var i in cat) 
+			for (var i in cat)
 				if (cat[i].id ==id)
 					return cat[i];
 		},

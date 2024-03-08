@@ -1,54 +1,6 @@
 webpackJsonp([18],{
 
-/***/ 47:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(86)
-/* template */
-var __vue_template__ = __webpack_require__(87)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/admin/category/edit.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-61229218", Component.options)
-  } else {
-    hotAPI.reload("data-v-61229218", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 86:
+/***/ 106:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -80,8 +32,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
 	data: function (_data) {
 		function data() {
 			return _data.apply(this, arguments);
@@ -95,118 +69,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	}(function () {
 		return {
 			baseURL: data.getBaseURL(),
-			storageURL: data.getStorageURL(),
-			id: this.$route.params.category_id,
-			submitButton: {
-				loading: false,
-				message: 'Submit'
+			loading: {
+				isLoading: false,
+				value: 'Submit'
 			}
 		};
 	}),
 
-	created: function created() {
-		$('#catForm').ajaxForm();
-		if (!data.getCategory().id) this.getCategory(this.id);
-	},
-
-
 	methods: {
-		back: function back() {
-			//data.getCategories() = this.escapeHTML(this.category)
-			this.$router.push('/category');
-		},
-
-		/**
-   * Update Category
-   *
-   */
 		submit: function submit() {
-			if (this.submitButton.loading) return;
-			var notif = util.notify(util.getProgressbarMessage('Updating category', 0), 'loading');
+			if (!this.isPasswordMatch()) return util.notify('Password not match', 'error');else if (this.loading.isLoading) return;
+
 			this.startLoading();
+
 			var vm = this;
-			$('#catForm').ajaxSubmit({
-				success: function success(response, status, xhr, $form) {
-					vm.stopLoading();
-					if (util.showResult(response, 'ajax')) {
-						data.setCategories([]);
-						vm.back();
-					}
-				},
+			var url = this.baseURL + 'api/v1/admin';
+			var params = $('#adminForm').serialize();
 
-				error: function error(response) {
-					util.showResult(response, 'ajax');
-					vm.stopLoading();
-				},
-
-				uploadProgress: function uploadProgress(a, b, c, d) {
-					notif.update('message', util.getProgressbarMessage('Updating category', d));
-				}
-
+			axios.post(url, params).then(function (response) {
+				vm.stopLoading();
+				if (util.showResult(response)) vm.back();
+			}).catch(function (error) {
+				vm.stopLoading();
+				util.showResult(error);
 			});
 		},
 
-		/**
-   * Get Category 
-   * @param Int $id Category id
-   * @return Object Category
-   */
-		getCategory: function getCategory(id) {
-			var vm = this;
-			util.notify('Loading please wait', 'loading');
-			axios.get(this.baseURL + 'api/v1/category/' + id).then(function (response) {
-				util.log(response);
-				vm.stopLoading();
-				data.setCategory(response.data);
-			}).catch(function (response) {
-				vm.stopLoading();
-				util.showResult(response);
-			});
+		back: function back() {
+			this.$router.push('/admin');
 		},
 
-		/**
-   * Start Loading
-   *
-   */
+		isPasswordMatch: function isPasswordMatch() {
+			return $('[name="admin_pass1"]').val() == $('[name="admin_pass"]').val();
+		},
+
 		startLoading: function startLoading() {
-			this.submitButton = {
-				loading: true,
-				message: 'Loading'
+			util.notify('Adding admin', 'loading');
+			this.loading = {
+				isLoading: true,
+				value: '<i class="fa fa-refresh fa-spin"></i> Submit'
 			};
 		},
 
-		/**
-   * Stop Loading
-   *
-   */
 		stopLoading: function stopLoading() {
 			$.notifyClose();
-			this.submitButton = {
-				loading: false,
-				message: 'Submit'
+			this.loading = {
+				isLoading: false,
+				value: 'Submit'
 			};
-		},
-
-		/**
-   * Unescape HTML
-   * @param Object subcategory
-   * @return Object unescape html
-   */
-		unescapeHTML: function unescapeHTML(subcategory) {
-			return util.unescapeHTML(subcategory);
-		}
-	},
-
-	computed: {
-		category: function category() {
-			return data.getCategory();
 		}
 	}
+
 });
 
 /***/ }),
 
-/***/ 87:
+/***/ 107:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -217,100 +135,69 @@ var render = function() {
     "div",
     { staticClass: "panel panel-default col-md-8 col-md-offset-2" },
     [
-      _c("div", { staticClass: "panel-body" }, [
+      _c("div", { staticClass: "panel panel-body" }, [
         _c(
           "form",
           {
             staticClass: "row",
             attrs: {
-              action: _vm.baseURL + "api/v1/category/" + _vm.id,
-              id: "catForm",
+              method: "POST",
+              action: _vm.baseURL + "api/v1/admin",
               enctype: "multipart/form-data",
-              method: "POST"
+              id: "adminForm"
             },
             on: {
               submit: function($event) {
                 $event.preventDefault()
-                return _vm.submit()
+                return _vm.submit.apply(null, arguments)
               }
             }
           },
           [
-            _c("input", {
-              attrs: { type: "hidden", name: "_method", value: "PUT" }
-            }),
-            _vm._v(" "),
             _c(
               "div",
               { staticClass: "col-md-4" },
-              [
-                _c("uploader", {
-                  attrs: {
-                    fileId: "categoryImageFile",
-                    fileName: "category_image",
-                    imageId: "selectedCategoryImage",
-                    imageSrc: _vm.storageURL + _vm.category.category_image
-                  }
-                })
-              ],
+              [_c("uploader", { attrs: { "file-name": "admin_image" } })],
               1
             ),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-8" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Category Name")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "text", name: "category_name", required: "" },
-                  domProps: {
-                    value: _vm.unescapeHTML(_vm.category.category_name)
-                  }
-                })
-              ]),
+              _vm._m(0),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Category Description")]),
-                _vm._v(" "),
-                _c(
-                  "textarea",
-                  {
-                    staticClass: "form-control",
-                    staticStyle: { height: "100%" },
-                    attrs: { name: "category_description" }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm.unescapeHTML(_vm.category.category_description)
-                      )
-                    )
-                  ]
-                )
-              ]),
+              _vm._m(1),
+              _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _vm._m(4),
               _vm._v(" "),
               _c("div", { staticClass: "form-group pull-right" }, [
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-primary",
-                    class: { disabled: _vm.submitButton.loading },
-                    attrs: { type: "submit" }
+                    staticClass: "btn btn-info",
+                    class: { disabled: _vm.loading.isLoading },
+                    attrs: { type: "submit" },
+                    domProps: { innerHTML: _vm._s(_vm.loading.value) }
                   },
-                  [_vm._v(_vm._s(_vm.submitButton.message))]
+                  [
+                    _vm._v(
+                      "\n\t\t\t\t\t\t" +
+                        _vm._s(_vm.loading.value) +
+                        "\n\t\t\t\t\t"
+                    )
+                  ]
                 ),
                 _vm._v(" "),
                 _c(
-                  "span",
+                  "button",
                   {
                     staticClass: "btn btn-default",
-                    on: {
-                      click: function($event) {
-                        return _vm.back()
-                      }
-                    }
+                    attrs: { type: "button" },
+                    on: { click: _vm.back }
                   },
-                  [_vm._v("Back")]
+                  [_vm._v("Cancel")]
                 )
               ])
             ])
@@ -320,15 +207,141 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "admin_name" } }, [_vm._v("Name")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", name: "admin_name", required: "" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "admin_user" } }, [_vm._v("Username")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", name: "admin_user", required: "" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "admin_type" } }, [_vm._v("Type")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          staticClass: "form-control",
+          attrs: { name: "admin_type", required: "" }
+        },
+        [
+          _c("option", { attrs: { value: "0", selected: "" } }, [
+            _vm._v("Co-admin")
+          ]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "1" } }, [_vm._v("Admin")])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "admin_pass" } }, [_vm._v("Password")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "password", name: "admin_pass", required: "" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "admin_pass1" } }, [
+        _vm._v("Confirm Password")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "password", name: "admin_pass1", required: "" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-61229218", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-c9cad44c", module.exports)
   }
 }
+
+/***/ }),
+
+/***/ 61:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(106)
+/* template */
+var __vue_template__ = __webpack_require__(107)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/admin/admin/add.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c9cad44c", Component.options)
+  } else {
+    hotAPI.reload("data-v-c9cad44c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ })
 

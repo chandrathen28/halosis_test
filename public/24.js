@@ -1,6 +1,6 @@
 webpackJsonp([24],{
 
-/***/ 102:
+/***/ 103:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -24,7 +24,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("section", { staticClass: "content-header" }, [
-      _c("h1", [_vm._v("Manage Order")])
+      _c("h1", [_vm._v("\n\t\t\tManage Admin"), _c("br")])
     ])
   }
 ]
@@ -33,13 +33,13 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7caf1306", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-7f01d548", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ 56:
+/***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -47,7 +47,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(102)
+var __vue_template__ = __webpack_require__(103)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -64,7 +64,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/admin/order/order.vue"
+Component.options.__file = "resources/assets/js/components/admin/admin/admin.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -73,9 +73,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7caf1306", Component.options)
+    hotAPI.createRecord("data-v-7f01d548", Component.options)
   } else {
-    hotAPI.reload("data-v-7caf1306", Component.options)
+    hotAPI.reload("data-v-7f01d548", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

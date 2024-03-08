@@ -3,22 +3,22 @@
 	<div class="panel-body">
 		<form v-on:submit.prevent="submit()" :action="baseURL+'api/v1/category'" class="row" id="catForm" enctype="multipart/form-data" method="POST">
 			<div class="col-md-4">
-				<uploader fileId="categoryImageFile" fileName="category_image" imageId="selectedCategoryImage" />
+				<uploader fileId="categoryImageFile" fileName="image" imageId="selectedCategoryImage" />
 			</div>
 			<div class="col-md-8">
 				<div class="form-group">
 					<label>Category Name</label>
-					<input type="text" class="form-control" name="category_name" required>
+					<input type="text" class="form-control" name="name" required>
 				</div>
 				<div class="form-group">
 					<label>Category Description</label>
-					<textarea class="form-control" style="height: 100%" name="category_description"></textarea>
+					<textarea class="form-control" style="height: 100%" name="description"></textarea>
 				</div>
 				<div class="form-group pull-right">
 					<button class="btn btn-primary" v-bind:class="{'disabled':submitButton.loading}" type="submit">{{ submitButton.message }}</button>
 					<router-link class="btn btn-default" tag="button" to="/category">Back</router-link>
 				</div>
-			</div>			
+			</div>
 		</form>
 	</div>
 </div>
@@ -31,7 +31,7 @@ export default {
 			baseURL:data.getBaseURL(),
 			submitButton:{loading:false, message:'Submit'}
 		}
-	},	
+	},
 
 	created() {
 		$('#catForm').ajaxForm();

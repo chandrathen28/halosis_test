@@ -4,22 +4,22 @@
 		<form v-on:submit.prevent="submit()" :action="baseURL+'api/v1/category/'+id" class="row" id="catForm" enctype="multipart/form-data" method="POST">
 			<input type="hidden" name="_method" value="PUT" />
 			<div class="col-md-4">
-				<uploader fileId="categoryImageFile" fileName="category_image" imageId="selectedCategoryImage" :imageSrc="storageURL+category.category_image"/>
+				<uploader fileId="categoryImageFile" fileName="image" imageId="selectedCategoryImage" :imageSrc="storageURL+category.category_image"/>
 			</div>
 			<div class="col-md-8">
 				<div class="form-group">
 					<label>Category Name</label>
-					<input type="text" class="form-control" name="category_name" :value="unescapeHTML(category.category_name)" required>
+					<input type="text" class="form-control" name="name" :value="unescapeHTML(category.category_name)" required>
 				</div>
 				<div class="form-group">
 					<label>Category Description</label>
-					<textarea class="form-control" style="height: 100%" name="category_description">{{ unescapeHTML(category.category_description) }}</textarea>
+					<textarea class="form-control" style="height: 100%" name="description">{{ unescapeHTML(category.category_description) }}</textarea>
 				</div>
 				<div class="form-group pull-right">
 					<button class="btn btn-primary" v-bind:class="{'disabled':submitButton.loading}" type="submit">{{ submitButton.message }}</button>
 					<span class="btn btn-default" v-on:click="back()">Back</span>
 				</div>
-			</div>			
+			</div>
 		</form>
 	</div>
 </div>
@@ -41,7 +41,7 @@ export default{
 
 	created() {
 		$('#catForm').ajaxForm();
-		if (!data.getCategory().id) 
+		if (!data.getCategory().id)
 			this.getCategory(this.id);
 	},
 
@@ -82,7 +82,7 @@ export default{
 		},
 
 		/**
-		 * Get Category 
+		 * Get Category
 		 * @param Int $id Category id
 		 * @return Object Category
 		 */
@@ -123,15 +123,6 @@ export default{
 				message: 'Submit'
 			}
 		},
-
-		/**
-		 * Unescape HTML
-		 * @param Object subcategory
-		 * @return Object unescape html
-		 */
-		unescapeHTML: function(subcategory) {
-			return util.unescapeHTML(subcategory);
-		}
 	},
 
 	computed: {

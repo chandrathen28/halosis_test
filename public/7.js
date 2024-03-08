@@ -6,9 +6,9 @@ webpackJsonp([7],{
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(93)
+var __vue_script__ = __webpack_require__(89)
 /* template */
-var __vue_template__ = __webpack_require__(94)
+var __vue_template__ = __webpack_require__(90)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -25,7 +25,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/admin/subcategory/edit.vue"
+Component.options.__file = "resources/assets/js/components/admin/product/edit.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -34,9 +34,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-61ce2652", Component.options)
+    hotAPI.createRecord("data-v-35324341", Component.options)
   } else {
-    hotAPI.reload("data-v-61ce2652", Component.options)
+    hotAPI.reload("data-v-35324341", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -48,11 +48,40 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 93:
+/***/ 89:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -128,49 +157,77 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		return {
 			baseURL: data.getBaseURL(),
 			storageURL: data.getStorageURL(),
-			subcategory: data.getSubcategory(),
-
-			subcategory_id: this.$route.params.subcategory_id,
-
+			product_id: this.$route.params.product_id,
 			submitButton: {
-				message: 'Submit',
-				loading: false
+				loading: false,
+				message: 'Submit'
 			}
 		};
 	}),
 
 	created: function created() {
-		$('#subcatform').ajaxForm();
-		if (!this.subcategory.id) {
-			this.subcategory = {
-				id: 0,
-				subcategory_image: '#',
-				subcategory_name: '',
-				subcategory_description: ''
-			};
-			this.getSubcategory(this.subcategory_id);
-		}
+		if (!data.getProduct().id) this.getProduct(this.product_id);
 	},
 
 
 	methods: {
+		/**
+   * Get product
+   * @param {Int} Product id
+   *
+   */
+		getProduct: function getProduct(id) {
+			var vm = this;
+			util.notify('Getting information', 'loading');
+			axios.get(this.baseURL + 'api/v1/product/' + id).then(function (response) {
+				vm.stopLoading();
+				data.setProduct(response.data);
+			}).catch(function (response) {
+				vm.stopLoading();
+				util.showResult(response);
+			});
+		},
 
 		/**
-   * Update Subcategory
+   * Start Loading
    * 
    */
+		startLoading: function startLoading() {
+			this.submitButton = {
+				loading: true,
+				message: 'Loading...'
+			};
+		},
+
+		/**
+   * Stop Loading
+   *
+   */
+		stopLoading: function stopLoading() {
+			$.notifyClose();
+			this.submitButton = {
+				loading: false,
+				message: 'Submit'
+			};
+		},
+
+		/**
+   * Back to previous page
+   * 
+   */
+		back: function back() {
+			this.$router.push('/products/' + this.category_id + '/' + this.subcategory_id);
+		},
+
 		submit: function submit() {
 			if (this.submitButton.loading) return;
-			var notif = util.notify(util.getProgressbarMessage('Updating subcategory', 0), 'loading');
-			this.startLoading();
 			var vm = this;
-			$('#subcatform').ajaxSubmit({
+			this.startLoading();
+			var notif = util.notify('Updating categories', 'loading');
+			$('#productForm').ajaxSubmit({
 				success: function success(response, status, xhr, $form) {
 					vm.stopLoading();
-					if (util.showResult(response, 'ajax')) {
-						data.setSubcategories([]);
-						$('#back').click();
-					}
+					if (util.showResult(response, 'ajax')) vm.back();
 				},
 
 				error: function error(response) {
@@ -185,66 +242,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 
 		/**
-   * Get category
-   * @param (int) Subcategory id
-   * @return {Object} Subcategory
+   * Unescape HTML
+   * @param "String" html
+   * @return "String" unescaped html
    */
-		getSubcategory: function getSubcategory(id) {
-			var vm = this;
-			this.startLoading();
-			util.notify('Getting information', 'loading');
-			axios.get(this.baseURL + 'api/v1/subcategory/' + id).then(function (response) {
-				vm.stopLoading();
-				vm.subcategory = response.data;
-			}).catch(function (error) {
-				vm.stopLoading();
-				util.showResult(error);
-			});
-		},
-
-		/**
-   * Start Loading
-   *
-   */
-		startLoading: function startLoading() {
-			this.submitButton = {
-				message: 'Loading',
-				loading: true
-			};
-		},
-
-		/**
-   * Stop Loading 
-   *
-   */
-		stopLoading: function stopLoading() {
-			$.notifyClose();
-			this.submitButton = {
-				message: 'Submit',
-				loading: false
-			};
-		},
-
-		/**
-   * unescape html characters
-   * @param 'String' html
-   * @return 'String' decoded html
-   */
-		unescapeHTML: function unescapeHTML(html) {
+		minify: function minify(html) {
 			return util.unescapeHTML(html);
 		}
 	},
 
 	computed: {
-		categories: function categories() {
-			return data.categories;
+		category_id: function category_id() {
+			return this.$route.params.category_id;
+		},
+
+		subcategory_id: function subcategory_id() {
+			return this.$route.params.subcategory_id;
+		},
+
+		subcategories: function subcategories() {
+			var subcategories = [];
+			for (var i in data.getSubcategories()) {
+				if (data.getSubcategories()[i]['category_id'] == this.category_id) subcategories.push(data.getSubcategories()[i]);
+			}
+			return subcategories;
+		},
+
+		product: function product() {
+			return data.getProduct();
+		},
+
+		product_quantity: {
+			get: function get() {
+				return data.getProduct().product_quantity ? data.getProduct().product_quantity : 0;
+			},
+			set: function set(value) {
+				if (value < 1) data.getProduct().product_quantity = 0;else data.getProduct().product_quantity = value;
+			}
+		},
+
+		product_name: {
+			get: function get() {
+				return this.minify(this.product.product_name);
+			},
+			set: function set(val) {
+				this.product.product_name = val;
+			}
 		}
 	}
 });
 
 /***/ }),
 
-/***/ 94:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -261,15 +311,15 @@ var render = function() {
           {
             staticClass: "row",
             attrs: {
-              action: _vm.baseURL + "api/v1/subcategory/" + _vm.subcategory_id,
-              id: "subcatform",
+              action: _vm.baseURL + "api/v1/product/" + _vm.product_id,
               method: "POST",
-              enctype: "multipart/form-data"
+              id: "productForm",
+              enctype: "mutlipart/form-data"
             },
             on: {
               submit: function($event) {
                 $event.preventDefault()
-                return _vm.submit.apply(null, arguments)
+                return _vm.submit()
               }
             }
           },
@@ -284,8 +334,8 @@ var render = function() {
               [
                 _c("uploader", {
                   attrs: {
-                    fileName: "subcategory_image",
-                    imageSrc: _vm.storageURL + _vm.subcategory.subcategory_image
+                    fileName: "product_image",
+                    imageSrc: _vm.storageURL + _vm.product.product_image
                   }
                 })
               ],
@@ -294,7 +344,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "col-md-8" }, [
               _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Select Category")]),
+                _c("label", [_vm._v("Select Subcategory")]),
                 _vm._v(" "),
                 _c(
                   "select",
@@ -303,12 +353,12 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.subcategory.category_id,
-                        expression: "subcategory.category_id"
+                        value: _vm.product.subcategory_id,
+                        expression: "product.subcategory_id"
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { name: "category_id" },
+                    attrs: { name: "subcategory_id", required: "" },
                     on: {
                       change: function($event) {
                         var $$selectedVal = Array.prototype.filter
@@ -320,8 +370,8 @@ var render = function() {
                             return val
                           })
                         _vm.$set(
-                          _vm.subcategory,
-                          "category_id",
+                          _vm.product,
+                          "subcategory_id",
                           $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
@@ -331,17 +381,17 @@ var render = function() {
                   },
                   [
                     _c("option", { attrs: { value: "0", disabled: "" } }, [
-                      _vm._v("-- No Category Selected--")
+                      _vm._v("-- No Subcategory Selected --")
                     ]),
                     _vm._v(" "),
-                    _vm._l(_vm.categories, function(category) {
+                    _vm._l(_vm.subcategories, function(subcategory) {
                       return _c(
                         "option",
-                        { domProps: { value: category.id } },
+                        { domProps: { value: subcategory.id } },
                         [
                           _vm._v(
                             "\n\t\t\t\t\t\t\t" +
-                              _vm._s(_vm.unescapeHTML(category.category_name)) +
+                              _vm._s(_vm.minify(subcategory.subcategory_name)) +
                               "\n\t\t\t\t\t\t"
                           )
                         ]
@@ -353,13 +403,27 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Name")]),
+                _c("label", [_vm._v("Product Name")]),
                 _vm._v(" "),
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.product_name,
+                      expression: "product_name"
+                    }
+                  ],
                   staticClass: "form-control",
-                  attrs: { type: "text", name: "subcategory_name" },
-                  domProps: {
-                    value: _vm.unescapeHTML(_vm.subcategory.subcategory_name)
+                  attrs: { type: "text", name: "product_name", required: "" },
+                  domProps: { value: _vm.product_name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.product_name = $event.target.value
+                    }
                   }
                 })
               ]),
@@ -371,48 +435,131 @@ var render = function() {
                   "textarea",
                   {
                     staticClass: "form-control",
-                    attrs: { name: "subcategory_description" }
+                    attrs: { name: "product_description" }
                   },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm.unescapeHTML(
-                          _vm.subcategory.subcategory_description
-                        )
-                      )
-                    )
-                  ]
+                  [_vm._v(_vm._s(_vm.minify(_vm.product.product_description)))]
                 )
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "pull-right" },
-                [
-                  _c("input", {
-                    staticClass: "btn btn-primary",
-                    class: { disabled: _vm.submitButton.loading },
-                    attrs: { type: "submit" },
-                    domProps: { value: _vm.submitButton.message }
-                  }),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", [_vm._v("Price")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.product.product_price,
+                      expression: "product.product_price"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", name: "product_price", required: "" },
+                  domProps: { value: _vm.product.product_price },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.product,
+                        "product_price",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", [_vm._v("Quantity")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-group" }, [
+                  _c("div", { staticClass: "input-group-btn" }, [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "btn btn-info",
+                        on: {
+                          click: function($event) {
+                            _vm.product_quantity--
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-minus" })]
+                    )
+                  ]),
                   _vm._v(" "),
                   _c(
-                    "router-link",
+                    "div",
                     {
-                      staticClass: "btn btn-default",
-                      attrs: {
-                        to: {
-                          path: "/subcategory/" + _vm.subcategory.category_id
-                        },
-                        id: "back",
-                        tag: "button"
-                      }
+                      staticClass: "form-control",
+                      staticStyle: { "text-align": "center" }
                     },
-                    [_vm._v("\n\t\t\t\t\t\tBack\n\t\t\t\t\t")]
-                  )
-                ],
-                1
-              )
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.product_quantity,
+                            expression: "product_quantity"
+                          }
+                        ],
+                        attrs: { type: "hidden", name: "product_quantity" },
+                        domProps: { value: _vm.product_quantity },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.product_quantity = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("b", [
+                        _c("span", [_vm._v(_vm._s(_vm.product_quantity))]),
+                        _vm._v(" in stock")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group-btn" }, [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "btn btn-info",
+                        on: {
+                          click: function($event) {
+                            _vm.product_quantity++
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-plus" })]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "pull-right" }, [
+                _c("input", {
+                  staticClass: "btn btn-primary",
+                  class: { disabled: _vm.submitButton.loading },
+                  attrs: { type: "submit" },
+                  domProps: { value: _vm.submitButton.message }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "btn btn-default",
+                  attrs: { type: "button", value: "Back" },
+                  on: {
+                    click: function($event) {
+                      return _vm.back()
+                    }
+                  }
+                })
+              ])
             ])
           ]
         )
@@ -426,7 +573,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-61ce2652", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-35324341", module.exports)
   }
 }
 

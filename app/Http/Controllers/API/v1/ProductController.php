@@ -14,14 +14,6 @@ class ProductController extends Controller
 	var $default_result = ['status' => 'success', 'message'=>[]];
 
 
-
-
-
-
-
-
-
-
     /**
      * Get all products
      * @param {Request} $request
@@ -30,12 +22,12 @@ class ProductController extends Controller
    	public function index(Request $request)
    	{
    		//Filter result
-   		$products = Products::all(); 
+   		$products = Products::all();
    		$x = [];
-   		foreach($products as $product) 
-   			if ($product->subcategory->category_id == $request->id) 
+   		foreach($products as $product)
+   			if ($product->subcategory->category_id == $request->id)
    				array_push($x, $product);
-   		
+
    		return response()->json($x);
    	}
 
@@ -90,15 +82,6 @@ class ProductController extends Controller
    		return response()->json($this->default_result); 			//Return response
    	}
 
-
-
-
-
-
-
-
-
-
    	/**
    	 * Insert product on database
    	 * @param {Request} $request
@@ -108,12 +91,12 @@ class ProductController extends Controller
    	{
    		try {
    			$products = new Products;
-   			$products->subcategory_id = $request->subcategory_id;
-   			$products->product_name = $request->product_name;
-   			$products->product_description = $request->product_description;
-   			$products->product_price = $request->product_price;
-   			$products->product_quantity = $request->product_quantity;
-   			$products->product_image = $this->getPath($request);
+   			$products->category_id = $request->category_id;
+   			$products->name = $request->name;
+   			$products->description = $request->description;
+   			$products->price = $request->price;
+   			$products->quantity = $request->quantity;
+   			$products->image = $this->getPath($request);
    			$products->save();
    			array_push($this->default_result['message'], 'Product inserted successfully');
    		} catch (Exception $e) {
@@ -133,12 +116,12 @@ class ProductController extends Controller
    	{
    		try {
    			$product = Products::find($id);
-   			$product->subcategory_id = $request->subcategory_id;
-   			$product->product_name = $request->product_name;
-   			$product->product_description = $request->product_description;
-   			$product->product_price = $request->product_price;
-   			$product->product_quantity = $request->product_quantity;
-   			$product->product_image = $image;
+            $product->category_id = $request->category_id;
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->quantity = $request->quantity;
+   			$product->image = $image;
    			$product->save();
    			$this->pushMessage('Product updated successfully');
    			return true;
@@ -187,13 +170,13 @@ class ProductController extends Controller
         $path = is_null($image) ? $this->default_image : $image;
     	$file = $request->file('product_image');
 
-    	if (!is_null($file)) {    	
-			$upload = UtilityController::upload($file, $this->default_directory, time() . '.jpg');  			
-			if ($upload['status']) 
+    	if (!is_null($file)) {
+			$upload = UtilityController::upload($file, $this->default_directory, time() . '.jpg');
+			if ($upload['status'])
 				$path = $upload['path'];
 			else
 				array_push($this->default_result['message'], 'An error occured while uploading your image');
-    	} 
+    	}
 
     	return $path;
     }
@@ -201,7 +184,7 @@ class ProductController extends Controller
     /**
      * Push message
      * @param {String} message
-     * 
+     *
      */
     private function pushMessage($message)
     {
@@ -224,7 +207,7 @@ class ProductController extends Controller
    	/**
    	 * Validate request
    	 * @param {Request} $request
-   	 * 
+   	 *
    	 */
    	private function validateInput($request)
    	{

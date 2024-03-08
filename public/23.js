@@ -1,6 +1,6 @@
 webpackJsonp([23],{
 
-/***/ 52:
+/***/ 44:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -8,7 +8,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(95)
+var __vue_template__ = __webpack_require__(77)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -25,7 +25,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/admin/product/product.vue"
+Component.options.__file = "resources/assets/js/components/admin/category/category.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -34,9 +34,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-666dbff0", Component.options)
+    hotAPI.createRecord("data-v-268f72e8", Component.options)
   } else {
-    hotAPI.reload("data-v-666dbff0", Component.options)
+    hotAPI.reload("data-v-268f72e8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -48,7 +48,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 95:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -73,11 +73,11 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("section", { staticClass: "content-header" }, [
       _c("h1", [
-        _vm._v("\n\t\t\tManage Products"),
+        _vm._v("\n\t\t\tManage Categories"),
         _c("br"),
         _vm._v(" "),
         _c("small", [
-          _vm._v("You can create, update, and delete poducts here.")
+          _vm._v("You can create, update, and delete categories here.")
         ])
       ])
     ])
@@ -88,7 +88,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-666dbff0", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-268f72e8", module.exports)
   }
 }
 

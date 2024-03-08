@@ -6,11 +6,6 @@ const categoryIndex = (resolve) => require(['./components/admin/category/index.v
 const categoryAdd = (resolve) => require(['./components/admin/category/add.vue'], resolve);
 const categoryEdit = (resolve) => require(['./components/admin/category/edit.vue'], resolve);
 
-const subcategory = (resolve) => require(['./components/admin/subcategory/subcategory.vue'], resolve);
-const subcategoryIndex = (resolve) => require(['./components/admin/subcategory/index.vue'], resolve);
-const subcategoryAdd = (resolve) => require(['./components/admin/subcategory/add.vue'], resolve);
-const subcategoryEdit = (resolve) => require(['./components/admin/subcategory/edit.vue'], resolve);
-
 const product = (resolve) => require(['./components/admin/product/product.vue'], resolve);
 const productIndex = (resolve) => require(['./components/admin/product/index.vue'], resolve);
 const productAdd = (resolve) => require(['./components/admin/product/add.vue'], resolve);
@@ -34,7 +29,6 @@ require('./components.js');
 //Setting up Routes
 const routes = [
 	{path: '/', component: home},
-	{path: '/subcategory', redirect: {path: `/subcategory/${0}`}},
 	{path: '/products/:category_id', component: product},
     {
 		path: '/category',
@@ -47,17 +41,7 @@ const routes = [
 	},
 
 	{
-		path: '/subcategory/:category_id',
-		component: subcategory,
-		children: [
-			{path: '', component: subcategoryIndex},
-			{path:'add', component: subcategoryAdd},
-			{path:'edit/:subcategory_id', component: subcategoryEdit}
-		]
-	},
-
-	{
-		path: '/products/:category_id/:subcategory_id',
+		path: '/products/:category_id',
 		component: product,
 		children:[
 			{path:'', component: productIndex},
@@ -100,9 +84,9 @@ const router = new VueRouter({
 	routes
 });
 
-//Initialize Vue 
+//Initialize Vue
 const app = new Vue({
-	router, 
+	router,
     el: '#app',
     data: {
     	baseURL: data.getBaseURL(),
@@ -143,14 +127,14 @@ const app = new Vue({
     			 	if (vm.try < 3) {
     			 		vm.try++;
     			 		vm.getAdmin(adminId);
-    			 	} else 
+    			 	} else
     			 		util.notif('An error occured, try to refresh', 'error');
     			 })
     	},
 
     	/**
     	 * Get Categories
-    	 * 
+    	 *
     	 * @return Object[] category
     	 */
     	getCategories: function() {
@@ -189,14 +173,14 @@ const app = new Vue({
                     if(vm.try < 3) {
                         vm.try++;
                         vm.getSubcategories();
-                    } else 
+                    } else
                         util.showResult(error);
                 })
         },
 
     	/**
     	 * End Session / Log out
-		 * 
+		 *
 		 * @return Redirect to login page
 		 */
     	logout: function() {

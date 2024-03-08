@@ -1,6 +1,6 @@
 webpackJsonp([13],{
 
-/***/ 105:
+/***/ 101:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88,22 +88,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
-			order_detail: {
-				order_firstname: '',
-				order_lastname: ''
-			}
+			order_detail: {}
 		};
 	},
 
 	created: function created() {
-		this.refreshOrder();
+		this.refreshOrderDetails();
 	},
 
 	methods: {
-		refreshOrder: function refreshOrder() {
+		refreshOrderDetails: function refreshOrderDetails() {
 			var vm = this;
 			util.notify('Getting details, please wait', 'loading');
-			axios.get(data.getBaseURL() + 'api/v1/order/' + this.order_id).then(function (response) {
+			axios.get(data.getBaseURL() + 'api/v1/order/' + this.id).then(function (response) {
 				$.notifyClose();
 				vm.order_detail = response.data;
 			}).catch(function (error) {
@@ -119,15 +116,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			return util.toCurrency(item.order_item_quantity * item.product.product_price);
 		},
 
+		back: function back() {
+			this.$router.push('/customer/orders/' + this.customer_id);
+		},
+
 		cancelOrder: function cancelOrder() {
 			var vm = this;
 			util.hideModal('#cancelModal');
 			util.notify('Cancelling your order, please wait...', 'loading');
-			axios.get(data.getBaseURL() + 'api/v1/order/cancel/' + this.order_id).then(function (response) {
+			axios.get(data.getBaseURL() + 'api/v1/order/cancel/' + this.id).then(function (response) {
 				if (response.data.status) {
 					if (response.data.status == 'success') {
 						util.notify('Order cancelled');
-						vm.$router.push('/order/' + vm.type);
+						vm.back();
 					} else util.notify('An error occured', 'error');
 				} else {
 					util.notify('An error occured', 'error');
@@ -141,11 +142,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			var vm = this;
 			util.hideModal('#completeModal');
 			util.notify('Loading please wait...', 'loading');
-			axios.get(data.getBaseURL() + 'api/v1/order/complete/' + this.order_id).then(function (response) {
+			axios.get(data.getBaseURL() + 'api/v1/order/complete/' + this.id).then(function (response) {
 				if (response.data.status) {
 					if (response.data.status == 'success') {
 						util.notify('Order completed', 'success');
-						vm.$router.push('/order/' + vm.type);
+						vm.back();
 					} else util.notify('An error occured', 'error');
 				} else {
 					util.notify('An error occured', 'error');
@@ -160,7 +161,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		fullname: function fullname() {
 			var firstname = this.order_detail.order_firstname;
 			var lastname = this.order_detail.order_lastname;
-			return firstname + ' ' + lastname;
+			var fullname = firstname + ' ' + lastname;
+			return this.order_detail.order_status ? fullname : '';
+		},
+
+		customer_id: function customer_id() {
+			return this.$route.params.customer_id;
+		},
+
+		id: function id() {
+			return this.$route.query.id;
+		},
+
+		isNew: function isNew() {
+			return this.order_detail.order_status == 'new';
 		},
 
 		items: function items() {
@@ -175,14 +189,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				price += this.items[i].order_item_quantity * parseFloat(this.items[i].product.product_price);
 			}
 			return util.toCurrency(price);
-		},
-
-		type: function type() {
-			return this.$route.params.type;
-		},
-
-		order_id: function order_id() {
-			return this.$route.params.order_id;
 		}
 	},
 
@@ -203,7 +209,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 106:
+/***/ 102:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -213,49 +219,41 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "div",
-        { staticClass: "form-group" },
-        [
-          _c(
-            "router-link",
-            {
-              staticClass: "btn btn-default white",
-              attrs: { to: "/order/" + _vm.type }
-            },
-            [_vm._v("< Go Back")]
-          ),
-          _vm._v(" "),
-          _vm.order_detail.order_status == "new"
-            ? _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger",
-                  attrs: { onclick: "util.showModal('#cancelModal')" }
-                },
-                [
-                  _c("i", { staticClass: "fa fa-trash" }),
-                  _vm._v(" Cancel Order\n\t\t")
-                ]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.order_detail.order_status == "new"
-            ? _c(
-                "button",
-                {
-                  staticClass: "btn btn-success",
-                  attrs: { onclick: "util.showModal('#completeModal')" }
-                },
-                [
-                  _c("i", { staticClass: "fa fa-check" }),
-                  _vm._v(" Complete Order\n\t\t")
-                ]
-              )
-            : _vm._e()
-        ],
-        1
-      ),
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "button",
+          { staticClass: "btn btn-default white", on: { click: _vm.back } },
+          [_vm._v(" < Go Back ")]
+        ),
+        _vm._v(" "),
+        _vm.isNew
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                attrs: { onclick: "util.showModal('#cancelModal')" }
+              },
+              [
+                _c("i", { staticClass: "fa fa-trash" }),
+                _vm._v(" Cancel Order\t\t\n\t\t")
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.isNew
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                attrs: { onclick: "util.showModal('#completeModal')" }
+              },
+              [
+                _c("i", { staticClass: "fa fa-check" }),
+                _vm._v(" Complete Order\n\t\t")
+              ]
+            )
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-6" }, [
@@ -437,7 +435,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("h4", [_c("b", [_vm._v("Customer Details")])])
+    return _c("h4", [_c("b", [_vm._v("Customer's Details")])])
   },
   function() {
     var _vm = this
@@ -457,7 +455,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-71d45bfa", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-a1ce3bb0", module.exports)
   }
 }
 
@@ -469,9 +467,9 @@ if (false) {
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(105)
+var __vue_script__ = __webpack_require__(101)
 /* template */
-var __vue_template__ = __webpack_require__(106)
+var __vue_template__ = __webpack_require__(102)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -488,7 +486,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/admin/order/details.vue"
+Component.options.__file = "resources/assets/js/components/admin/customer/details.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -497,9 +495,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-71d45bfa", Component.options)
+    hotAPI.createRecord("data-v-a1ce3bb0", Component.options)
   } else {
-    hotAPI.reload("data-v-71d45bfa", Component.options)
+    hotAPI.reload("data-v-a1ce3bb0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

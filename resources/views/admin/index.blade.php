@@ -52,7 +52,7 @@
 							<!-- The user image in the menu -->
 							<li class="user-header">
 								<img v-bind:src="admin.admin_image" class="img-circle" alt="User Image">
-								<p>@{{ admin.admin_name }} - @{{ admin.admin_type==1?'Admin':'Co-admin' }} 
+								<p>@{{ admin.admin_name }} - @{{ admin.admin_type==1?'Admin':'Co-admin' }}
 									<small>since @{{ admin.created_at }}</small>
 								</p>
 							</li>
@@ -70,7 +70,7 @@
 				</ul>
 			</div>
 		</nav>
-	</header>	
+	</header>
 	<aside class="main-sidebar">
 
 		<!-- sidebar: style can be found in sidebar.less -->
@@ -98,7 +98,7 @@
 					</span>
 				</div>
 			</form>
-			
+
 			<!-- /.search form -->
 
 			<!-- Sidebar Menu -->
@@ -109,15 +109,10 @@
 				<router-link to="/" tag="li" active-class="active" exact>
 					<a href=""><i class="glyphicon glyphicon-home"></i> <span>Home</span></a>
 				</router-link>
-				
+
 				<!-- Manage Category -->
 				<router-link to="/category" tag="li" active-class="active">
 					<a href=""><i class="glyphicon glyphicon-th-large"></i> <span>Manage Category</span></a>
-				</router-link>
-
-				<!-- Manage Subcategory -->
-				<router-link to="/subcategory" tag="li" active-class="active">
-					<a href=""><i class="glyphicon glyphicon-th-list"></i> <span>Manage Subcategory</span></a>
 				</router-link>
 
 				<li class="treeview" :class="{'active':$route.path.match('products')}">
@@ -126,41 +121,17 @@
 					</a>
 					<ul class="treeview-menu">
 						<li class="header child-active">Select Category</li>
-						<li 
-							v-for="category in categories" 
-							@click="$router.push(`/products/${category.id}/0`)"
+						<li
+							v-for="category in categories"
+							@click="$router.push(`/products/${category.id}`)"
 							:class="{'active':$route.path.match(`/products/${category.id}`)}">
 							<a href="#" @click.prevent="">@{{ minify(category.category_name) }}</a>
 						</li>
 					</ul>
 				</li>
-				<li class="treeview" :class="{'active':$route.path.match('order/')}">
-					<a href="#"><i class="fa fa-ship"></i> <span>Order Management</span>
-						<span class="pull-right-container">
-							<i class="fa fa-angle-left pull-right"></i>
-						</span>
-					</a>
-					<ul class="treeview-menu">
-						<router-link tag="li" to="/order/all" active-class="active">
-							<a href="#">All</a>
-						</router-link>
-						
-						<router-link tag="li" to="/order/new" active-class="active">
-							<a href="#">New</a>
-						</router-link>
-						
-						<router-link tag="li" to="/order/complete" active-class="active">
-							<a href="#">Completed</a>
-						</router-link>
-						
-						<router-link tag="li" to="/order/cancel" active-class="active">
-							<a href="#">Cancelled</a>
-						</router-link>
-					</ul>
-				</li>
 				<router-link tag="li" to="/customer" active-class="active">
 					<a href="#">
-						<i class="fa fa-users"></i> 
+						<i class="fa fa-users"></i>
 						<span>Manage Customer</span>
 					</a>
 				</router-link>
@@ -168,17 +139,17 @@
 					<a href="#"><i class="fa fa-shield"></i> <span>Manage Admin</span></a>
 				</router-link>>
 			</ul>
-			
+
 			<!-- /.sidebar-menu -->
 		</section>
 		<!-- /.sidebar -->
-	</aside>			
-		
+	</aside>
+
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 		<router-view></router-view>
 	</div>
-	<!-- /.content-wrapper -->	
+	<!-- /.content-wrapper -->
 
 	<!-- Logout Modal -->
 	<modal id="logoutModal">
@@ -187,7 +158,7 @@
 			<p>Are you sure to logout?</p>
 		</modal-body>
 		<modal-footer>
-			<button class="btn btn-danger" v-on:click="logout()" data-dismiss="modal">Logout</button>	
+			<button class="btn btn-danger" v-on:click="logout()" data-dismiss="modal">Logout</button>
 			<button class="btn btn-default" data-dismiss="modal">Cancel</button>
 		</modal-footer>
 	</modal>

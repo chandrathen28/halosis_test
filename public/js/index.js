@@ -29,7 +29,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		29: 0
+/******/ 		25: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -2121,10 +2121,7 @@ var redir = {
 	template: '<div>{{$router.push(`/category/${$route.params.category_id}/subcategory/0`)}}</div>'
 };
 
-var routes = [{ path: '/', component: home }, { path: '/category/:category_id', component: redir }, { path: '/check-out', component: checkout }, { path: '/cart', component: cart }, { path: '/order', component: order }, { path: '/order-details', component: order_details }, {
-	path: '/category/:category_id/subcategory/:subcategory_id',
-	component: product
-}];
+var routes = [{ path: '/', component: home }, { path: '/category/:category_id', component: redir }, { path: '/check-out', component: checkout }, { path: '/cart', component: cart }];
 
 var router = new VueRouter({
 	routes: routes

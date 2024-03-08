@@ -6,9 +6,9 @@ webpackJsonp([8],{
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(91)
+var __vue_script__ = __webpack_require__(87)
 /* template */
-var __vue_template__ = __webpack_require__(92)
+var __vue_template__ = __webpack_require__(88)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -25,7 +25,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/admin/subcategory/add.vue"
+Component.options.__file = "resources/assets/js/components/admin/product/add.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -34,9 +34,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-67de7bee", Component.options)
+    hotAPI.createRecord("data-v-ff64698c", Component.options)
   } else {
-    hotAPI.reload("data-v-67de7bee", Component.options)
+    hotAPI.reload("data-v-ff64698c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -48,11 +48,25 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 91:
+/***/ 87:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -130,69 +144,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		return data;
 	}(function () {
 		return {
+			quantity: 1,
 			baseURL: data.getBaseURL(),
-			category_id: this.$route.params.category_id,
-
-			subcat: {
-				name: '',
-				description: ''
-			},
-
 			submitButton: {
-				message: 'Submit',
-				loading: false
+				loading: false,
+				message: 'Submit'
 			}
 		};
 	}),
 
-	created: function created() {
-		$('#subcatForm').ajaxForm();
-	},
-
-
 	methods: {
-		/**
-   * Go back to Previos page
-   * @param Int cat id
-   *
-   */
 		back: function back() {
-			this.$router.push('/subcategory/' + this.category_id);
-		},
-
-		/** 
-   * Submit Form and Add category
-   *
-   */
-		submit: function submit() {
-			if (this.submitButton.loading) return;
-			var vm = this;
-			var notif = util.notify(util.getProgressbarMessage('Adding Subcategory', 0), 'loading');
-			this.startLoading();
-			$('#subcatForm').ajaxSubmit({
-				success: function success(response, status, xhr, $form) {
-					if (util.showResult(response, 'ajax')) {
-						data.setSubcategories([]);
-						vm.back();
-					}
-					vm.stopLoading();
-				},
-
-				error: function error(response) {
-					util.showResult(response, 'ajax');
-					vm.stopLoading();
-				},
-
-				uploadProgress: function uploadProgress(a, b, c, d) {
-					notif.update('message', util.getProgressbarMessage('Adding category', d));
-				}
-			});
+			this.$router.push('/products/' + this.category_id + '/' + this.subcategory_id);
 		},
 
 		/**
-   * Start Loading 
-   * Prevent User to continuall submit the form
-   *
+   * Start Loading
+   * 
    */
 		startLoading: function startLoading() {
 			this.submitButton = {
@@ -203,9 +171,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 		/**
    * Stop Loading
-   * 
+   *
    */
 		stopLoading: function stopLoading() {
+			$.notifyClose();
 			this.submitButton = {
 				message: 'Submit',
 				loading: false
@@ -213,34 +182,77 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 
 		/**
-   * Unescape HTML
-   * Example : &lt;h1&gt; -> <h1>
-   * @param String 
+   * Submit the form and add product
+   *
    */
-		unescapeHTML: function unescapeHTML(string) {
-			return util.unescapeHTML(string);
+		submit: function submit() {
+			var vm = this;
+			if (vm.submitButton.loading) return;
+			this.startLoading();
+			var notif = util.notify(util.getProgressbarMessage('Adding product', 0), 'loading');
+			$('#productForm').ajaxSubmit({
+				success: function success(response, a, b, c) {
+					if (util.showResult(response, 'ajax')) vm.back();
+					vm.stopLoading();
+				},
+
+				error: function error(response) {
+					vm.stopLoading();
+					util.showResult(response, 'ajax');
+				},
+
+				uploadProgress: function uploadProgress(a, b, c, percentCompleted) {
+					notif.update('message', util.getProgressbarMessage('Adding product', percentCompleted));
+				}
+			});
 		},
 
 		/**
-   * Change Params Category id
-   * //subcategory/:category_id/add
-   * @param Int Id
+   * Unescape HTML
+   * @param "String" html
+   * @return "String" unescaped html
    */
-		changeId: function changeId(id) {
-			this.$router.push({ params: { category_id: id } });
+		minify: function minify(html) {
+			return util.minify(util.unescapeHTML(html), 20);
 		}
 	},
 
 	computed: {
-		categories: function categories() {
-			return data.categories;
+		subcategories: function subcategories() {
+			var x = data.subcategories;
+			var y = [];
+			for (var i in x) {
+				if (x[i].category_id == this.category_id) y.push(x[i]);
+			}return y;
+		},
+
+		category_id: function category_id() {
+			return this.$route.params.category_id;
+		},
+
+		subcategory_id: {
+			get: function get() {
+				return this.$route.params.subcategory_id;
+			},
+			set: function set(value) {
+				this.$router.push({ params: { subcategory_id: value } });
+			}
+		},
+
+		product_quantity: {
+			get: function get() {
+				return this.quantity;
+			},
+			set: function set(value) {
+				if (value < 1) this.quantity = 0;else this.quantity = value;
+			}
 		}
 	}
 });
 
 /***/ }),
 
-/***/ 92:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -257,10 +269,10 @@ var render = function() {
           {
             staticClass: "row",
             attrs: {
-              action: _vm.baseURL + "api/v1/subcategory",
-              id: "subcatForm",
-              enctype: "multipart/form-data",
-              method: "POST"
+              action: _vm.baseURL + "api/v1/product",
+              method: "POST",
+              id: "productForm",
+              enctype: "mutlipart/formdata"
             },
             on: {
               submit: function($event) {
@@ -273,21 +285,13 @@ var render = function() {
             _c(
               "div",
               { staticClass: "col-md-4" },
-              [
-                _c("uploader", {
-                  attrs: {
-                    fileId: "subcategoryImageFile",
-                    fileName: "subcategory_image",
-                    imageId: "selectedImage"
-                  }
-                })
-              ],
+              [_c("uploader", { attrs: { fileName: "product_image" } })],
               1
             ),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-8" }, [
               _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Select Category")]),
+                _c("label", [_vm._v("Select Subcategory")]),
                 _vm._v(" "),
                 _c(
                   "select",
@@ -296,46 +300,41 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.category_id,
-                        expression: "category_id"
+                        value: _vm.subcategory_id,
+                        expression: "subcategory_id"
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { name: "category_id", required: "" },
+                    attrs: { name: "subcategory_id", required: "" },
                     on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.category_id = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                        function($event) {
-                          return _vm.changeId(_vm.category_id)
-                        }
-                      ]
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.subcategory_id = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
                     }
                   },
                   [
                     _c("option", { attrs: { value: "0", disabled: "" } }, [
-                      _vm._v("--- No Categories Selected ---")
+                      _vm._v("-- No Subcategory Selected --")
                     ]),
                     _vm._v(" "),
-                    _vm._l(_vm.categories, function(category) {
+                    _vm._l(_vm.subcategories, function(subcategory) {
                       return _c(
                         "option",
-                        { domProps: { value: category.id } },
+                        { domProps: { value: subcategory.id } },
                         [
                           _vm._v(
                             "\n\t\t\t\t\t\t\t" +
-                              _vm._s(_vm.unescapeHTML(category.category_name)) +
+                              _vm._s(_vm.minify(subcategory.subcategory_name)) +
                               "\n\t\t\t\t\t\t"
                           )
                         ]
@@ -346,60 +345,81 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Name")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.subcat.name,
-                      expression: "subcat.name"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    name: "subcategory_name",
-                    required: ""
-                  },
-                  domProps: { value: _vm.subcat.name },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.subcat, "name", $event.target.value)
-                    }
-                  }
-                })
-              ]),
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
+              _vm._m(2),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Description")]),
+                _c("label", [_vm._v("Quantity")]),
                 _vm._v(" "),
-                _c("textarea", {
-                  directives: [
+                _c("div", { staticClass: "input-group" }, [
+                  _c("div", { staticClass: "input-group-btn" }, [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "btn btn-info",
+                        on: {
+                          click: function($event) {
+                            _vm.product_quantity--
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-minus" })]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
                     {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.subcat.description,
-                      expression: "subcat.description"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { name: "subcategory_description" },
-                  domProps: { value: _vm.subcat.description },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.subcat, "description", $event.target.value)
-                    }
-                  }
-                })
+                      staticClass: "form-control",
+                      staticStyle: { "text-align": "center" }
+                    },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.product_quantity,
+                            expression: "product_quantity"
+                          }
+                        ],
+                        attrs: { type: "hidden", name: "product_quantity" },
+                        domProps: { value: _vm.product_quantity },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.product_quantity = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("b", [
+                        _c("span", [_vm._v(_vm._s(_vm.product_quantity))]),
+                        _vm._v(" in stock")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group-btn" }, [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "btn btn-info",
+                        on: {
+                          click: function($event) {
+                            _vm.product_quantity++
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-plus" })]
+                    )
+                  ])
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "pull-right" }, [
@@ -427,13 +447,53 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Product Name")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", name: "product_name", required: "" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Description")]),
+      _vm._v(" "),
+      _c("textarea", {
+        staticClass: "form-control",
+        attrs: { name: "product_description" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Price")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", name: "product_price", required: "" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-67de7bee", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-ff64698c", module.exports)
   }
 }
 
