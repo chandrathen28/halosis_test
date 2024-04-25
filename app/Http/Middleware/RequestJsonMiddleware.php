@@ -16,7 +16,7 @@ class RequestJsonMiddleware
      */
     public function handle(Request $request, Closure $next): \Illuminate\Http\JsonResponse
     {
-        if (!$request) {
+        if (!$request->isJson()) {
             return response()->json([
                 'status' => 403,
                 'message' => 'Parameters must be json.'

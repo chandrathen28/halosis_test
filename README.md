@@ -7,7 +7,7 @@
 3. Run 'composer install'
 4. Run 'cp .env.example .env' or Rename .env.example to .env
 5. Open .env file and Setup your database connection
-6. Run 'php artisan migrate --seed'
+6. Run 'php artisan migrate'
 7. Run 'php artisan key:generate'
-8. Run 'php artisan storage:link'
+8. Run 'php artisan passport:install'
 
