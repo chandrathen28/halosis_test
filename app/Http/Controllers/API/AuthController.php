@@ -58,4 +58,23 @@ class AuthController extends Controller
             return $this->sendResponse(['data' => null], 'User register successfully.');
         }
     }
+
+    public function profile(): \Illuminate\Http\JsonResponse
+    {
+        $user = $this->guardAPI()->user();
+
+        return $this->sendResponse([ 'data' => $user ], 'Success get profile');
+    }
+
+    public function logout (): \Illuminate\Http\JsonResponse
+    {
+        $this->guardAPI()->user()->tokens->each(function($token, $key) {
+            $token->revoke();
+            $token->delete();
+        });
+
+        return $this->sendResponse([], 'User logout successfully.');
+    }
+
+
 }
